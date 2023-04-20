@@ -1,0 +1,89 @@
+virtualenv -p python3 env
+
+source ~/Documents/api_ctp/env/bin/activate
+
+pip install --upgrade pip
+
+pip install Django==3.2.4 mysqlclient pymysql
+
+# pip list
+
+django-admin startproyecto Proyecto_API
+
+cd Proyecto_API
+
+django-admin startapp api
+
+Proyecto_API > Proyecto_API/settings.py > "INSTALLED_APPS" > agregar 'api'
+
+Proyecto_API > Proyecto_API/settings.py > "DATABASES" > Hacer conexión a BD
+'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'USER': 'root',
+        'PASSWORD': '8791',
+        'NAME': 'api_ctp',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
+    }
+
+# CREATE MODELS api/models.py
+
+from django.db import models
+
+# Create your models here.
+
+class Direccion(models.Model):
+    calle = models.CharField(max_length=50)
+    numero = models.PositiveIntegerField()
+    comuna = models.CharField(max_length=50)
+
+class Proveedor(models.Model):
+    rut = models.PositiveIntegerField()
+    nombre = models.CharField(max_length=50)
+    giro = models.CharField(max_length=100)
+    direcc = models.ForeignKey(Direccion, on_delete=models.CASCADE)
+    telefono = models.PositiveIntegerField()
+
+class Factura(models.Model):
+    fecha_compra = models.DateField()
+    valor_neto = models.PositiveIntegerField()
+    iva = models.PositiveIntegerField()
+    total = models.PositiveIntegerField()
+    id_proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
+
+class Producto(models.Model):
+    prod_nombre = models.CharField(max_length=50)
+    cant = models.PositiveIntegerField()
+    precio_unit = models.PositiveIntegerField()
+    total = models.PositiveIntegerField()
+    factura_detalle = models.ForeignKey(Factura, on_delete=models.CASCADE)
+
+class Registro_Solicitud(models.Model):
+    fecha = models.DateTimeField()
+    nro_factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
+
+# CREATE api/admin.site.register admin.py
+
+from django.contrib import admin
+from .models import *
+
+# Register your models here.
+
+admin.site.register(Direccion)
+admin.site.register(Factura)
+admin.site.register(Producto)
+admin.site.register(Proveedor)
+admin.site.register(Registro_Solicitud)
+
+python manage.py migrate
+
+python manage.py createsuperuser
+
+python manage.py makemigrations
+
+python manage.py migrate
+
+python manage.py runserver
