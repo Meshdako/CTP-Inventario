@@ -8,6 +8,9 @@ import json
 
 # Create your views here.
 
+def Home(request):
+    return render(request = request, template_name="main/index.html")
+
 def Facturas(request):
     facturas = Factura.objects.all()
     return render(request = request, template_name="main/facturas.html", context={'facturas':facturas})
@@ -15,6 +18,11 @@ def Facturas(request):
 def Products(request):
     productos = Producto.objects.all()
     return render(request = request, template_name="main/products.html", context={'productos':productos})
+
+def Add_Item(request):
+    facturas = Factura.objects.all()
+    return render(request = request, template_name="main/add_item.html", context={'facturas':facturas})
+
 
 class ProductView(View):
 
@@ -55,7 +63,7 @@ class ProductView(View):
             producto.prod_nombre=jd['prod_nombre']
             producto.cant=jd['cant']
             producto.precio_unit=jd['precio_unit']
-            producto.total=jd['total']
+            producto.total = jd['cant'] * jd['precio_unit']
             producto.factura_detalle_id=jd['factura_detalle_id']
             producto.save()
             datos = {'message': 'Success'}
