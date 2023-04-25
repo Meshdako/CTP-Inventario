@@ -11,20 +11,81 @@
 </head>
 
 <body>
-    <div class="container p-4">
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <img src="images/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+        <a class="navbar-brand" href="#">CTP San Ramón</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/api/home/views">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/api/productos/views">Productos</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    
+        <div class="row">
+            <div class="col-md-4">
+                A
+            </div>
+            <div class="col-md-4">
+                B
+            </div>
+            <div class="col-md-4 text-right">
+                <a href="/api/productos/add_item"">
+                    <button type="button" class="btn btn-warning ml-2">Agregar Producto</button>
+                </a>
+            </div>
+        </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio Unitario</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in productos %}
+            <tr>
+                <th scope="row">{{m.factura_detalle_id}}</th>
+                <td>{{m.prod_nombre}}</td>
+                <td>{{m.cant}}</td>
+                <td>${{m.precio_unit}}</td>
+                <td>${{m.total}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    <!-- <div class="container p-4">
         <div class="row">
             {% for m in productos %}
             <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
                 <div class="card h-100 p-4">
                     <p>{{m.factura_detalle_id}}</p>
                     <h4>{{m.prod_nombre}}</h4>
-                    <p class="text-muted">{{m.cant}} | ${{m.precio_unit}}</p>
-                    <p>${{m.total}}</p>
+                    <p class="text-muted">{{m.cant}} | </p>
+                    <p></p>
                 </div>
             </div>
             {% endfor %}
         </div>
-    </div>
+    </div> -->
 
 
 
