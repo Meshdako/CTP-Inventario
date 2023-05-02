@@ -1,15 +1,24 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
 from django.http.response import JsonResponse
 from django.utils.decorators import method_decorator
-from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from django.views import View
 from .models import *
 import json
 
 # Create your views here.
 
 def Home(request):
-    return render(request = request, template_name="main/index.html")
+    user_count = User.objects.count()
+    model1_data = Producto.objects.all()
+    model2_data = Factura.objects.all()
+    context = {
+        'user_count': user_count,
+        'model1_data': model1_data,
+        'model2_data': model2_data,
+    }
+    return render(request, 'main/index.html', context)
 
 def Facturas(request):
     facturas = Factura.objects.all()
