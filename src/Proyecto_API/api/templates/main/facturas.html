@@ -5,26 +5,88 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facturas</title>
+    <title>Productos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 
 <body>
-    <div class="container p-4">
-        <div class="row">
+    {% load humanize %}
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <img src="/static/images/logo.png" alt="" width="50" height="50" class="d-inline-block align-text-top"><a class="navbar-brand" href="#">CTP San Ramón</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/api/home/views">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/api/productos/views">Productos</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    
+    <div class="row">
+        <div class="col-md-4">
+            A
+        </div>
+        <div class="col-md-4">
+            B
+        </div>
+        <div class="col-md-4 text-right">
+            <a href="/api/productos/add_item"">
+                <button type="button" class="btn btn-warning ml-2">Agregar Factura</button>
+            </a>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Fecha de Compra</th>
+                <th scope="col">Valor Neto</th>
+                <th scope="col">IVA</th>
+                <th scope="col">Total</th>
+                <th scope="col">ID Proveedor</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for m in facturas %}
+            <tr>
+                <th scope="row">{{ m.id }}</th>
+                <td>{{ m.fecha_compra }}</td>
+                <td>{{ m.valor_neto|intcomma|currency:"CLP" }}</td>
+                <td>{{ m.iva }}</td>
+                <td>{{ m.total|intcomma }}</td>
+                <td>{{ m.id_proveedor_id }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    <!-- <div class="container p-4">
+        <div class="row">
+            {% for m in productos %}
             <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
                 <div class="card h-100 p-4">
-                    <p>{{m.fecha_compra}}</p>
-                    <!-- <h4>{{m.prod_nombre}}</h4> -->
-                    <p class="text-muted">${{m.valor_neto}} | ${{m.iva}}</p>
-                    <p>${{m.total}}</p>
+                    <p>{{m.factura_detalle_id}}</p>
+                    <h4>{{m.prod_nombre}}</h4>
+                    <p class="text-muted">{{m.cant}} | </p>
+                    <p></p>
                 </div>
             </div>
             {% endfor %}
         </div>
-    </div>
+    </div> -->
 
 
 
