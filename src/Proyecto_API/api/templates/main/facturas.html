@@ -14,31 +14,35 @@
     {% load humanize %}
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <img src="/static/images/logo.png" alt="" width="50" height="50" class="d-inline-block align-text-top"><a class="navbar-brand" href="#">CTP San Ramón</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <a href="/api/home/views">
+            <img src="/static/images/logo.png" alt="" width="50" height="50" class="d-inline-block align-text-top"><a class="navbar-brand" href="#">CTP San Ramón</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </a>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="/api/home/views">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/api/productos/views">Productos</a>
+                    <a class="nav-link" href="/api/productos/views">Productos</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link active" aria-current="page" href="/api/facturas/views">Facturas</a>
                 </li>
             </ul>
         </div>
     </nav>
-
     
     <div class="row">
         <div class="col-md-4">
-            A
+            
         </div>
         <div class="col-md-4">
-            B
+            
         </div>
         <div class="col-md-4 text-right">
             <a href="/api/productos/add_item"">
@@ -63,8 +67,8 @@
             <tr>
                 <th scope="row">{{ m.id }}</th>
                 <td>{{ m.fecha_compra }}</td>
-                <td>{{ m.valor_neto|intcomma|currency:"CLP" }}</td>
-                <td>{{ m.iva }}</td>
+                <td>{{ m.valor_neto|intcomma }}</td>
+                <td>{{ m.iva|intcomma }}</td>
                 <td>{{ m.total|intcomma }}</td>
                 <td>{{ m.id_proveedor_id }}</td>
             </tr>
