@@ -6,5 +6,6 @@ from .models import *
 admin.site.register(Direccion)
 admin.site.register(Proveedor)
 admin.site.register(Factura)
-admin.site.register(Producto)
+admin.site.register(Categoria)
+admin.site.register(Articulo)
 admin.site.register(Registro_Solicitud)
