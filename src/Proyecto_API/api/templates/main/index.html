@@ -16,72 +16,55 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a href="/api/home/views">
-            <img src="/static/images/logo.png" alt="" width="50" height="50" class="d-inline-block align-text-top"><a class="navbar-brand" href="#">CTP San Ramón</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </a>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link active" aria-current="page" href="/api/home/views">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/api/productos/views">Productos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/api/facturas/views">Facturas</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Usuarios</h3>
-                    </div>
-                    <div class="box-body">
-                        <h2>{{ users_count }}</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Modelo 1</h3>
-                    </div>
-                    <div class="box-body">
-                        <ul>
-                            {% for obj in model1_data %}
-                            <li>{{ obj.prod_nombre }} - {{ obj.cant }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Modelo 2</h3>
-                    </div>
-                    <div class="box-body">
-                        <ul>
-                            {% for obj in model2_data %}
-                            <li>{{ obj.fecha_compra }} - ${{ obj.total }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <div class="p-1 bg-dark text-white">
+        <div class="d-flex justify-content-center align-items-center">
+            <a href="/api/home/views">
+                <img src="/static/images/logo.png" alt="" width="50" height="50"
+                    class="d-inline-block align-text-top"><a class="navbar-brand" href="#">CTP San Ramón</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </a>
         </div>
     </div>
-    {% endblock %}
+
+    <div class="row">
+        <div class="col-md-4 d-flex justify-content-center align-items-center">
+            <a href="">
+                <button type="button" class="btn btn-warning btn-lg m-5">Ingresos</button>
+            </a>
+        </div>
+        <div class="col-md-4 d-flex justify-content-center align-items-center">
+            <a href="">
+                <button type="button" class="btn btn-warning btn-lg m-5">Salidas</button>
+            </a>
+        </div>
+        <div class="col-md-4 d-flex justify-content-center align-items-center">
+            <a href="/api/articulos/views">
+                <button type="button" class="btn btn-warning btn-lg m-5">Artículos</button>
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 d-flex justify-content-center align-items-center">
+            <a href="/api/facturas/views">
+                <button type="button" class="btn btn-warning btn-lg m-5">Facturas</button>
+            </a>
+        </div>
+        <div class="col-md-4 d-flex justify-content-center align-items-center">
+            <a href="">
+                <button type="button" class="btn btn-warning btn-lg m-5">Categorias</button>
+            </a>
+        </div>
+        <div class="col-md-4 d-flex justify-content-center align-items-center">
+            <a href="/api/articulos/views">
+                <button type="button" class="btn btn-warning btn-lg m-5">Registros</button>
+            </a>
+        </div>
+    </div>
 
 
     <!-- Optional Javascript -->
