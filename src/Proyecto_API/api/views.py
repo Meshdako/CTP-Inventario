@@ -10,30 +10,23 @@ import json
 # Create your views here.
 
 def Home(request):
-    user_count = User.objects.count()
-    model1_data = Producto.objects.all()
-    model2_data = Factura.objects.all()
-    context = {
-        'user_count': user_count,
-        'model1_data': model1_data,
-        'model2_data': model2_data,
-    }
-    return render(request, 'main/index.html', context)
+    return render(request = request, template_name="main/index.html")
 
 def Facturas(request):
     facturas = Factura.objects.all()
     return render(request = request, template_name="main/facturas.html", context={'facturas':facturas})
 
 def Products(request):
-    productos = Producto.objects.all()
-    return render(request = request, template_name="main/products.html", context={'productos':productos})
+    articulos = Articulo.objects.all()
+    return render(request = request, template_name="main/articulos.html", context={'articulos':articulos})
 
 def Add_Item(request):
     facturas = Factura.objects.all()
-    return render(request = request, template_name="main/add_item.html", context={'facturas':facturas})
+    categorias = Categoria.objects.all()
+    return render(request = request, template_name="main/add_item.html", context={'facturas':facturas, 'categorias':categorias})
 
 
-class ProductView(View):
+class ArticuloView(View):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -41,52 +34,54 @@ class ProductView(View):
 
     def get(self, request, id=0):
         if(id > 0):
-            productos = list(Producto.objects.filter(id=id).values())
-            if len(productos) > 0:
-                producto = productos[0]
-                datos={'message':"Success", 'producto':producto}
+            articulos = list(Articulo.objects.filter(id=id).values())
+            if len(articulos) > 0:
+                articulo = articulos[0]
+                datos={'message':"Success", 'articulo':articulo}
             else:
-                datos={'message':"Producto no encontrado..."}
+                datos={'message':"Articulo no encontrado..."}
             return JsonResponse(datos)
         else:
-            productos=list(Producto.objects.values())
-            if len(productos) > 0:
-                datos={'message':'Success', 'productos':productos}
+            articulos = list(Articulo.objects.values())
+            if len(articulos) > 0:
+                datos={'message':'Success', 'articulos':articulos}
             else:
-                datos={'message':"Productos no encontrados..."}
+                datos={'message':"Articulos no encontrados..."}
             return JsonResponse(datos)
 
     def post(self, request):
         # print(request.body)
         jd = json.loads(request.body)
-        Producto.objects.create(prod_nombre=jd['prod_nombre'], cant=jd['cant'], precio_unit=jd['precio_unit'], total=jd['total'], factura_detalle_id=jd['factura_detalle_id'])
+        
+        Articulo.objects.create(prod_nombre=jd['prod_nombre'], cant=jd['cant'], precio_unit=jd['precio_unit'], total=jd['total'], factura_detalle_id=jd['factura_detalle_id'])
+        
         datos={'message':'Success'}
         # print(jd)
         return JsonResponse(datos)
 
     def put(self, request, id):
         jd = json.loads(request.body)
-        productos = list(Producto.objects.filter(id=id).values())
-        if len(productos) > 0:
-            producto = Producto.objects.get(id=id)
-            producto.prod_nombre=jd['prod_nombre']
-            producto.cant=jd['cant']
-            producto.precio_unit=jd['precio_unit']
-            producto.total = jd['cant'] * jd['precio_unit']
-            producto.factura_detalle_id=jd['factura_detalle_id']
-            producto.save()
+        articulos = list(Articulo.objects.filter(id=id).values())
+        if len(articulos) > 0:
+            articulo = Articulo.objects.get(id=id)
+            articulo.prod_nombre=jd['prod_nombre']
+            articulo.cant=jd['cant']
+            articulo.precio_unit=jd['precio_unit']
+            articulo.total = jd['cant'] * jd['precio_unit']
+            articulo.factura_detalle_id=jd['factura_detalle_id']
+            articulo.save()
             datos = {'message': 'Success'}
         else:
-            datos={'message':"Producto no encontrado..."}
+            datos={'message':"Articulo no encontrado..."}
         return JsonResponse(datos)
 
     def delete(self, request, id):
-        producto = list(Producto.objects.filter(id=id).values())
-        if len(producto) > 0:
-            Producto.objects.filter(id=id).delete(),
+        articulos = list(Articulo.objects.filter(id=id).values())
+        if len(articulos) > 0:
+            Articulo.objects.filter(id=id).delete(),
             datos = {'message': 'Success'}
         else:
-            datos = {'message': "Producto no encontrado..."}
+            datos = {'message': "Articulo no encontrado..."}
         return JsonResponse(datos)
 
 class FacturaView(View):
