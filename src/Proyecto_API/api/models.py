@@ -44,4 +44,3 @@ class Articulo(models.Model):
 class Registro_Solicitud(models.Model):
     fecha = models.DateTimeField()
     nro_factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
-
