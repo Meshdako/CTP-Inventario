@@ -5,8 +5,8 @@ app_main = "main"
 
 urlpatterns=[
     # URLs Productos
-    path('productos/', ProductView.as_view(), name='product_list'),
-    path('productos/<int:id>', ProductView.as_view(), name='product_process'),
+    path('articulos/', ArticuloView.as_view(), name='articulo_list'),
+    path('articulos/<int:id>', ArticuloView.as_view(), name='articulo_process'),
     # URLs Facturas
     path('facturas/', FacturaView.as_view(), name='factura_list'),
     path('facturas/<int:id>', FacturaView.as_view(), name='factura_process'),
@@ -18,7 +18,7 @@ urlpatterns=[
     path('registros/<int:id>', RegistroView.as_view(), name='registro_process'),
     # URLs Plantillas
     path("home/views", Home, name="home"),
-    path("productos/views", Products, name="productos"),
-    path("productos/add_item", Add_Item, name="facturas"),
+    path("articulos/views", Products, name="productos"),
+    path("articulos/add_item", Add_Item, name="facturas"),
     path("facturas/views", Facturas, name="facturas")
 ]
