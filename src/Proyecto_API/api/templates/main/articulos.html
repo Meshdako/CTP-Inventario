@@ -13,25 +13,42 @@
 <body>
     {% load humanize %}
 
+    <!-- Barra de Navegación -->
     <div class="p-1 bg-dark text-white">
-        <div class="d-flex justify-content-center align-items-center">
-            <a href="/api/home/views">
-                <img src="/static/images/logo.png" alt="" width="50" height="50"
-                    class="d-inline-block align-text-top"><a class="navbar-brand" href="#">CTP San Ramón</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </a>
+        <div class="row">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex justify-content-center align-items-center">
+                    <a href="/api/home/views">
+                        <img src="/static/images/logo.png" alt="" width="50" height="50"
+                            class="d-inline-block align-text-top">
+                        <a class="navbar-brand" href="/api/home/views">
+                            &nbsp;CTP San Ramón
+                        </a>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <a class="navbar-brand" href="#">
+                        <p>
+                            Desarrollador
+                            <p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="d-flex justify-content-between">
+    <div class="row">
+        <div class="col-md-4 mx-auto text-center">
             <a href="/api/home/views">
                 <button type="button" class="btn btn-warning mt-3 mb-2">Volver al Inicio</button>
             </a>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
             <a href="/api/articulos/add_item"">
                 <button type=" button" class="btn btn-warning mt-3 mb-2">Agregar Artículo</button>
             </a>
