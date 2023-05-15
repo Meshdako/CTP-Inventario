@@ -1,0 +1,16 @@
+body {
+    background-color: #f2f2f2;
+    /* color de fondo */
+    background-image: url('https://tecnicosanramon.cl/inicio/wp-content/uploads/2021/08/matricula-2021.jpg');
+    /* imagen de fondo */
+    background-position: center center;
+    /* posición de la imagen */
+    background-repeat: no-repeat;
+    /* repetición de la imagen */
+    background-attachment: fixed;
+    /* desplazamiento de la imagen */
+    background-size: cover;
+    /* tamaño de la imagen */
+    opacity: 0.8;
+    /* transparencia de la imagen */
+}
