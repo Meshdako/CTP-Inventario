@@ -23,6 +23,7 @@ class Factura(models.Model):
     iva = models.PositiveIntegerField()
     total = models.PositiveIntegerField()
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
+    archivo = models.FileField(upload_to='documentos/%Y/%m/%d/', default='default.pdf')
 
 class Categoria(models.Model):
     TIPO_CATEGORIA = [
