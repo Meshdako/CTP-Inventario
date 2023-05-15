@@ -25,6 +25,9 @@ def Add_Item(request):
     categorias = Categoria.objects.all()
     return render(request = request, template_name="main/add_item.html", context={'facturas':facturas, 'categorias':categorias})
 
+def Add_Factura(request):
+    proveedores = Proveedor.objects.all()
+    return render(request = request, template_name="main/add_facturas.html", context={'proveedores':proveedores})
 
 class ArticuloView(View):
 
