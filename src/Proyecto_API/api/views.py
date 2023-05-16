@@ -20,6 +20,14 @@ def Products(request):
     articulos = Articulo.objects.all()
     return render(request = request, template_name="main/articulos.html", context={'articulos':articulos})
 
+def Add(request):
+    direccion = Direccion.objects.all()
+    proveedores = Proveedor.objects.all()
+    facturas = Factura.objects.all()
+    categorias = Categoria.objects.all()
+    return render(request=request, template_name="main/add.html", context={'direccion':direccion, 'proveedores':proveedores, 'facturas':facturas, 'categorias':categorias})
+
+
 def Add_Item(request):
     facturas = Factura.objects.all()
     categorias = Categoria.objects.all()
