@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http.response import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views import View
 from .models import *
+from .forms import *
 import json
 
 # Create your views here.
@@ -27,18 +28,32 @@ def Add(request):
     categorias = Categoria.objects.all()
     return render(request=request, template_name="main/add.html", context={'direccion':direccion, 'proveedores':proveedores, 'facturas':facturas, 'categorias':categorias})
 
+def crear_Articulo(request):
+    form = ArticuloForm()
 
-def Add_Item(request):
-    facturas = Factura.objects.all()
-    categorias = Categoria.objects.all()
-    return render(request = request, template_name="main/add_item.html", context={'facturas':facturas, 'categorias':categorias})
+    if request.method == 'POST':
+        form = ArticuloForm(request.POST)
+        if form.is_valid():
+            categoria = form.cleaned_data['categoria']
+            nombre_articulo = form.cleaned_data['nombre_articulo']
+            cantidad = form.cleaned_data['cantidad']
+            precio_unitario = form.cleaned_data['precio_unitario']
+            total = form.cleaned_data['total']
 
-def Add_Factura(request):
-    proveedores = Proveedor.objects.all()
-    return render(request = request, template_name="main/add_facturas.html", context={'proveedores':proveedores})
+            nuevos_campos = request.POST.getlist('nombre_del_campo')
+
+            for campo in nuevos_campos:
+                nuevo_articulo = Articulo(nombre=campo)
+                nuevo_articulo.save()
+
+            # Realizar otras acciones o redireccionar a otra página
+
+            return redirect('main/articulos.html')
+        
+    return render(request, 'main/add_test.html', {'form':form})
+
 
 class ArticuloView(View):
-
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -96,7 +111,6 @@ class ArticuloView(View):
         return JsonResponse(datos)
 
 class FacturaView(View):
-
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -147,7 +161,6 @@ class FacturaView(View):
         return JsonResponse(datos)
 
 class ProveedorView(View):
-
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -198,7 +211,6 @@ class ProveedorView(View):
         return JsonResponse(datos)
     
 class RegistroView(View):
-
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)

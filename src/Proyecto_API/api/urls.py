@@ -19,8 +19,7 @@ urlpatterns=[
     # URLs Plantillas
     path("home/views", Home, name="home"),
     path("articulos/add", Add, name="articulos"),
+    path("articulos/add_test", crear_Articulo),
     path("articulos/views", Products, name="articulos"),
-    path("articulos/add_item", Add_Item, name="facturas"),
     path("facturas/views", Facturas, name="facturas"),
-    path("facturas/add_factura", Add_Factura)
 ]
