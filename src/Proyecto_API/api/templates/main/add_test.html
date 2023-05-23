@@ -17,7 +17,25 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="{{ form.nombre_articulo.id_for_label }}">Nombre del Articulo</label>
+                    <input type="text" id="{{ form.nombre_articulo.id_for_label }}"
+                        name="{{ form.nombre_articulo.name }}" placeholder="Ingresa el articulo" class="form-control">
+                    {{ form.nombre_articulo.errors }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="cantidad">Cantidad</label>
+                    <input type="number" class="form-control" name="cantidad" placeholder="Ingresa la cantidad">
+                </div>
+            </div> 
+        </div>
+        <br>
+        <br>
+        {{ form.as_ul }}
 
         <div id="articulos-container">
             <!-- Agregar nuevos articulos -->

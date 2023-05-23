@@ -29,6 +29,10 @@ def Add(request):
     return render(request=request, template_name="main/add.html", context={'direccion':direccion, 'proveedores':proveedores, 'facturas':facturas, 'categorias':categorias})
 
 def crear_Articulo(request):
+    direccion = Direccion.objects.all()
+    proveedores = Proveedor.objects.all()
+    facturas = Factura.objects.all()
+    categorias = Categoria.objects.all()
     form = ArticuloForm()
 
     if request.method == 'POST':
@@ -43,14 +47,15 @@ def crear_Articulo(request):
             nuevos_campos = request.POST.getlist('nombre_del_campo')
 
             for campo in nuevos_campos:
-                nuevo_articulo = Articulo(nombre=campo)
-                nuevo_articulo.save()
+                print(campo)
+                # nuevo_articulo = Articulo(nombre=campo)
+                # nuevo_articulo.save()
 
             # Realizar otras acciones o redireccionar a otra página
 
             return redirect('main/articulos.html')
         
-    return render(request, 'main/add_test.html', {'form':form})
+    return render(request, 'main/add.html', {'form':form, 'direccion':direccion, 'proveedores':proveedores, 'facturas':facturas, 'categorias':categorias})
 
 
 class ArticuloView(View):
