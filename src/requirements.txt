@@ -1,26 +1,16 @@
 asgiref==3.6.0
+Babel==2.12.1
 Django==3.2.4
+django-adminlte2==0.4.3
+django-humanize==0.1.2
+django-money==3.1.0
+humanize==4.6.0
 mysqlclient==2.1.1
+pip==23.1.2
+py-moneyed==2.0
 PyMySQL==1.0.3
 pytz==2023.3
 setuptools==67.6.1
 sqlparse==0.4.4
+typing_extensions==4.5.0
 wheel==0.40.0
-
-# ACTUALIZAR
-asgiref           3.6.0
-Babel             2.12.1
-Django            3.2.4
-django-adminlte2  0.4.3
-django-humanize   0.1.2
-django-money      3.1.0
-humanize          4.6.0
-mysqlclient       2.1.1
-pip               23.1.2
-py-moneyed        2.0
-PyMySQL           1.0.3
-pytz              2023.3
-setuptools        67.6.1
-sqlparse          0.4.4
-typing_extensions 4.5.0
-wheel             0.40.0
