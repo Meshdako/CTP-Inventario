@@ -1,17 +1,24 @@
 from django import forms
+from .models import *
 
-class ArticuloForm(forms.Form):
-    # Proveedor
-    rut = forms.IntegerField()
-    # Factura
-    fecha_compra = forms.DateField()
-    valor_neto = forms.IntegerField()
-    iva = forms.IntegerField()
-    total = forms.IntegerField()
-    archivo = forms.FileField()
-    # Articulo
-    categoria = forms.ChoiceField(choices=((1, 'Mobiliario'), (2, 'Aseo'), (3, 'Química'), (4, 'Accesorios de Computadora')))
-    nombre_articulo = forms.CharField()
-    cantidad = forms.IntegerField()
-    precio_unitario = forms.DecimalField()
-    total_articulo = forms.DecimalField()
+class ProveedorForm(forms.ModelForm):
+    class Meta:
+        model = Proveedor
+        fields = ['rut']
+
+class FacturaForm(forms.ModelForm):
+    class Meta:
+        model = Factura
+        fields = ['fecha_compra', 'valor_neto', 'iva', 'total', 'archivo', 'proveedor']
+        widgets = {
+            'proveedor': forms.Select(attrs={'class': 'form-control'})  # Opcional: agregar una clase CSS al campo proveedor
+        }
+
+class ArticuloForm(forms.ModelForm):
+    class Meta:
+        model = Articulo
+        fields = ['categoria', 'nombre_articulo', 'cantidad', 'precio_unitario', 'total', 'factura_detalle']
+        widgets = {
+            'categoria': forms.Select(attrs={'class': 'form-control'}),
+            'factura_detalle': forms.Select(attrs={'class': 'form-control'})  # Agregar una clase CSS al campo factura_detalle
+        }

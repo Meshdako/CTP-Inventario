@@ -18,7 +18,8 @@ urlpatterns=[
     path('registros/<int:id>', RegistroView.as_view(), name='registro_process'),
     # URLs Plantillas
     path("home/views", Home, name="home"),
-    path("articulos/add", crear_Articulo),
     path("articulos/views", Products, name="articulos"),
+    path('articulos/add', crear_articulo, name='crear_articulo'),
     path("facturas/views", Facturas, name="facturas"),
+    path('facturas/add', crear_factura, name='crear_factura'),
 ]

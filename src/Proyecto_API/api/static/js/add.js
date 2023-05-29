@@ -46,9 +46,10 @@ function agregarArticulo() {
         <hr>
         <br>
         <div id="articulo_${campoIndex}">
+            {% csrf_token %}
             <div class="form-group">
-                <label for="categoria_${campoIndex}">Selecciona la categoría</label>
-                <select class="form-control" id="categoria_${campoIndex}" name="categoria_${campoIndex}">
+                <label for="{{ articulo_form.categoria_${campoIndex}.id_for_label }}">Selecciona la categoría</label>
+                <select class="form-control" id="{{ articulo_form.categoria_${campoIndex}.id_for_label }}" name="{{ articulo_form.categoria_${campoIndex}.html_name }}">
                     <option value="1">Mobiliario</option>
                     <option value="2">Aseo</option>
                     <option value="3">Química</option>
@@ -60,28 +61,28 @@ function agregarArticulo() {
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label for="nombre_articulo_${campoIndex}">Nombre del Articulo</label>
-                        <input type="text" class="form-control" id="nombre_articulo_${campoIndex}" name="nombre_articulo_${campoIndex}" placeholder="Ingresa el artículo">
+                        <label for="{{ articulo_form.nombre_articulo_${campoIndex}.id_for_label }}">Nombre del Articulo</label>
+                        <input type="text" class="form-control" id="{{ articulo_form.nombre_articulo_${campoIndex}.id_for_label }}" name="{{ articulo_form.nombre_articulo_${campoIndex}.html_name }}" placeholder="Ingresa el artículo">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="cantidad_${campoIndex}">Cantidad</label>
-                        <input type="text" class="form-control" id="cantidad_${campoIndex}" name="cantidad_${campoIndex}" oninput="formatInput(this)" placeholder="Ingresa la cantidad">
+                        <label for="{{ articulo_form.cantidad_${campoIndex}.id_for_label }}">Cantidad</label>
+                        <input type="text" class="form-control" id="{{ articulo_form.cantidad_${campoIndex}.id_for_label }}" name="{{ articulo_form.cantidad_${campoIndex}.html_name }}" oninput="formatInput(this)" placeholder="Ingresa la cantidad">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="precio_unitario_${campoIndex}">Precio Unitario</label>
-                        <input type="text" class="form-control" id="precio_unitario_${campoIndex}" name="precio_unitario_${campoIndex}" oninput="formatInput(this)" placeholder="Ingresa el precio">
+                        <label for="{{ articulo_form.precio_unitario_${campoIndex}.id_for_label }}">Precio Unitario</label>
+                        <input type="text" class="form-control" id="{{ articulo_form.precio_unitario_${campoIndex}.id_for_label }}" name="{{ articulo_form.precio_unitario_${campoIndex}.html_name }}" oninput="formatInput(this)" placeholder="Ingresa el precio">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="total_${campoIndex}">Total</label>
-                        <input type="text" class="form-control" id="total_${campoIndex}" name="total_${campoIndex}" oninput="formatInput(this)" placeholder="Ingresa el total">
+                        <label for="{{ articulo_form.total_${campoIndex}.id_for_label }}">Total</label>
+                        <input type="text" class="form-control" id="{{ articulo_form.total_${campoIndex}.id_for_label }}" name="{{ articulo_form.total_${campoIndex}.html_name }}" oninput="formatInput(this)" placeholder="Ingresa el total">
                     </div>
                 </div>
             </div>

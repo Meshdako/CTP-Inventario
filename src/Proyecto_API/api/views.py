@@ -21,41 +21,70 @@ def Products(request):
     articulos = Articulo.objects.all()
     return render(request = request, template_name="main/articulos.html", context={'articulos':articulos})
 
-def Add(request):
-    direccion = Direccion.objects.all()
-    proveedores = Proveedor.objects.all()
-    facturas = Factura.objects.all()
-    categorias = Categoria.objects.all()
-    return render(request=request, template_name="main/add.html", context={'direccion':direccion, 'proveedores':proveedores, 'facturas':facturas, 'categorias':categorias})
-
-def crear_Articulo(request):
-    direccion = Direccion.objects.all()
-    proveedores = Proveedor.objects.all()
-    facturas = Factura.objects.all()
-    categorias = Categoria.objects.all()
-    form = ArticuloForm()
+def crear_articulo(request):
+    # Formulario
+    articulo_form = ArticuloForm()
 
     if request.method == 'POST':
-        form = ArticuloForm(request.POST)
-        if form.is_valid():
-            categoria = form.cleaned_data['categoria']
-            nombre_articulo = form.cleaned_data['nombre_articulo']
-            cantidad = form.cleaned_data['cantidad']
-            precio_unitario = form.cleaned_data['precio_unitario']
-            total = form.cleaned_data['total']
-
-            nuevos_campos = request.POST.getlist('nombre_del_campo')
-
-            for campo in nuevos_campos:
-                print(campo)
-                # nuevo_articulo = Articulo(nombre=campo)
-                # nuevo_articulo.save()
-
-            # Realizar otras acciones o redireccionar a otra página
-
-            return redirect('main/articulos.html')
+        articulo_form = ArticuloForm(request.POST)
         
-    return render(request, 'main/add.html', {'form':form, 'direccion':direccion, 'proveedores':proveedores, 'facturas':facturas, 'categorias':categorias})
+        if articulo_form.is_valid():
+            # Obtener los datos de los formularios
+            articulo_nombre_articulo = articulo_form.cleaned_data['fecha_compra']
+            articulo_cantidad = articulo_form.cleaned_data['valor_neto']
+            articulo_precio_unitario = articulo_form.cleaned_data['iva']
+            articulo_total = articulo_form.cleaned_data['total']
+            articulo_factura_detalle = request.POST.get('factura')
+            articulo_categoria = request.POST.get('categoria')
+            
+            articulo_factura_detalle = Factura.objects.get(id=factura_detalle_id)
+            articulo_categoria = Categoria.objects.get(id=categoria_id)  # Obtener la instancia del proveedor
+            
+            factura = Factura.objects.create(
+                nombre_articulo = articulo_nombre_articulo,
+                cantidad = articulo_cantidad,
+                precio_unitario = articulo_precio_unitario,
+                total = articulo_total,
+                factura_detalle = articulo_factura_detalle,
+                categoria = articulo_categoria
+            )
+            return redirect('articulos')
+        
+    return render(request, 'main/add_articulo.html', {
+        'articulo_form': articulo_form,
+    })
+
+def crear_factura(request):
+    # Formulario
+    factura_form = FacturaForm()
+
+    if request.method == 'POST':
+        factura_form = FacturaForm(request.POST)
+        
+        if factura_form.is_valid():
+            # Obtener los datos de los formularios
+            factura_fecha_compra = factura_form.cleaned_data['fecha_compra']
+            factura_valor_neto = factura_form.cleaned_data['valor_neto']
+            factura_iva = factura_form.cleaned_data['iva']
+            factura_total = factura_form.cleaned_data['total']
+            factura_archivo = request.FILES['archivo']
+            
+            proveedor_id = request.POST.get('proveedor')  # Obtener el ID del proveedor seleccionado del formulario
+            proveedor = Proveedor.objects.get(id=proveedor_id)  # Obtener la instancia del proveedor
+            
+            factura = Factura.objects.create(
+                fecha_compra=factura_fecha_compra,
+                valor_neto=factura_valor_neto,
+                iva=factura_iva,
+                total=factura_total,
+                archivo=factura_archivo,
+                proveedor=proveedor)  # Asignar el proveedor a la factura
+            
+            return redirect('facturas')
+
+    return render(request, 'main/add.html', {
+        'factura_form': factura_form,
+    })
 
 
 class ArticuloView(View):

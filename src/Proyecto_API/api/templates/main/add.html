@@ -54,16 +54,17 @@
 
     <div class="container">
         <br>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" action="{% url 'crear_factura' %}" enctype="multipart/form-data">
             {% csrf_token %}
+            {{ factura_form.as_p }}
 
-            <div class="from-group">
+            <!-- <div class="from-group">
                 <div class="row">
                     <div class="col-md-9">
-                        <label for="{{ form.rut.id_for_label }}">
+                        <label for="{{ factura_form.rut.id_for_label }}">
                             Selecciona el Proveedor
                         </label>
-                        <select class="form-control" name="{{ form.rut.html_name }}">
+                        <select class="form-control" name="{{ factura_form.rut.html_name }}">
                             {% for m in proveedores %}
                             <option value="{{ m.id }}" {% ifequal form.rut.value m.id %}selected{% endifequal %}>
                                 {{ m.rut }} - {{ m.nombre }}
@@ -85,38 +86,38 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="{{ form.fecha_compra.id_for_label }}">Fecha de Compra</label>
-                        <input type="date" class="form-control" id="{{ form.fecha_compra.id_for_label }}"
-                            name="{{ form.fecha_compra.html_name }}">
+                        <label for="{{ factura_form.fecha_compra.id_for_label }}">Fecha de Compra</label>
+                        <input type="date" class="form-control" id="{{ factura_form.fecha_compra.id_for_label }}"
+                            name="{{ factura_form.fecha_compra.html_name }}">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="{{ form.valor_neto.id_for_label }}">Valor Neto $</label>
-                        <input type="text" class="form-control" id="{{ form.valor_neto.id_for_label }}"
-                            name="{{ form.valor_neto.html_name }}" oninput="formatInput(this)" placeholder="Ingresa el Valor Neto">
+                        <label for="{{ factura_form.valor_neto.id_for_label }}">Valor Neto $</label>
+                        <input type="text" class="form-control" id="{{ factura_form.valor_neto.id_for_label }}"
+                            name="{{ factura_form.valor_neto.html_name }}" oninput="formatInput(this)" placeholder="Ingresa el Valor Neto">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="{{ form.iva.id_for_label }}">IVA $</label>
-                        <input type="text" class="form-control" id="{{ form.iva.id_for_label }}"
-                            name="{{ form.iva.html_name }}" oninput="formatInput(this)" placeholder="Ingresa el IVA">
+                        <label for="{{ factura_form.iva.id_for_label }}">IVA $</label>
+                        <input type="text" class="form-control" id="{{ factura_form.iva.id_for_label }}"
+                            name="{{ factura_form.iva.html_name }}" oninput="formatInput(this)" placeholder="Ingresa el IVA">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="{{ form.total.id_for_label }}">Total $</label>
-                        <input type="text" class="form-control" id="{{ form.total.id_for_label }}"
-                            name="{{ form.total.html_name }}" oninput="formatInput(this)" placeholder="Ingresa el Total">
+                        <label for="{{ factura_form.total.id_for_label }}">Total $</label>
+                        <input type="text" class="form-control" id="{{ factura_form.total.id_for_label }}"
+                            name="{{ factura_form.total.html_name }}" oninput="formatInput(this)" placeholder="Ingresa el Total">
                     </div>
                 </div>
             </div>
 
             <br>
             <div>
-                <label for="{{ form.archivo.id_for_label }}">Archivo:</label>
-                {{ form.archivo }}
+                <label for="{{ factura_form.archivo.id_for_label }}">Archivo:</label>
+                {{ factura_form.archivo }}
             </div>
 
             <div id="articulos-container"></div>
@@ -124,7 +125,7 @@
 
             <br>
             <button type="button" onclick="agregarArticulo()" class="btn btn-warning mt-4">¿Agregar otro
-                artículo?</button>
+                artículo?</button> -->
 
             <br>
             <br>
