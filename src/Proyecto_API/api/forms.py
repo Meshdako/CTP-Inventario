@@ -4,7 +4,7 @@ from .models import *
 class ProveedorForm(forms.ModelForm):
     class Meta:
         model = Proveedor
-        fields = ['rut']
+        fields = ['rut', 'nombre', 'giro', 'correo', 'telefono', 'celular', 'web', 'ubicacion']
 
 class FacturaForm(forms.ModelForm):
     class Meta:
