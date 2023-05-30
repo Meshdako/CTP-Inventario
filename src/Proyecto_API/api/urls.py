@@ -24,5 +24,6 @@ urlpatterns=[
     path('articulos/add', crear_articulo, name='crear_articulo'),
     path("facturas/views", Facturas, name="facturas"),
     path('facturas/add', crear_factura, name='crear_factura'),
+    path('proveedor/add', crear_proveedor, name='crear_proveedor'),
     path('registros', logs_view, name='registros'),
 ]
