@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.http.response import JsonResponse
+from django.db.models.signals import pre_save, post_save
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, redirect
+from django.http.response import JsonResponse
+from django.contrib.auth.models import User
+from django.contrib import messages
 from django.views import View
 from .models import *
 from .forms import *
@@ -10,8 +12,80 @@ import json
 
 # Create your views here.
 
+@receiver(pre_save, sender=Articulo)
+def pre_save_handler(sender, instance, **kwargs):
+    if instance.pk is None:
+        change_type = 'Nuevo artículo'
+    else:
+        try:
+            old_instance = Articulo.objects.get(pk=instance.pk)
+        except Articulo.DoesNotExist:
+            return
+        if instance.cantidad > old_instance.cantidad:
+            change_type = 'Aumento'
+        elif instance.cantidad < old_instance.cantidad:
+            change_type = 'Reducción'
+        else:
+            return
+    log_entry = LogEntry(item=instance, change_type=change_type)
+    log_entry.save()
+
+@receiver(post_save, sender=Articulo)
+def post_save_handler(sender, instance, created, **kwargs):
+    if created:
+        return
+    try:
+        old_instance = Articulo.objects.get(pk=instance.pk)
+    except Articulo.DoesNotExist:
+        return
+    if instance.cantidad == old_instance.cantidad:
+        return
+    change_type = 'Aumento' if instance.cantidad > old_instance.cantidad else 'Reducción'
+    log_entry = LogEntry(item=instance, change_type=change_type)
+    log_entry.save()
+
+def logs_view(request):
+    logs = LogEntry.objects.all().order_by('-timestamp')
+    return render(request, 'main/registros.html', {'logs': logs})
+
 def Home(request):
     return render(request = request, template_name="main/index.html")
+
+def Ingresos(request):
+    articulos = Articulo.objects.all()
+    
+    if request.method == 'POST':
+        articulo_id = request.POST['articulo']
+        cantidad_adicional = request.POST['cantidad']
+        
+        # Obtén el objeto Articulo seleccionado
+        articulo = Articulo.objects.get(id=articulo_id)
+        
+        # Aumenta la cantidad existente
+        articulo.cantidad += int(cantidad_adicional)
+        articulo.save()
+
+        # Redirecciona a la página deseada después de agregar la cantidad
+        return redirect('registros')
+    return render(request=request, template_name="main/ingresos.html", context={'articulos': articulos})
+
+def Egresos(request):
+    articulos = Articulo.objects.all()
+    
+    if request.method == 'POST':
+        articulo_id = request.POST['articulo']
+        cantidad_adicional = request.POST['cantidad']
+        
+        # Obtén el objeto Articulo seleccionado
+        articulo = Articulo.objects.get(id=articulo_id)
+        
+        # Aumenta la cantidad existente
+        articulo.cantidad -= int(cantidad_adicional)
+        articulo.save()
+
+        # Redirecciona a la página deseada después de agregar la cantidad
+        return redirect('registros')
+    return render(request=request, template_name="main/egresos.html", context={'articulos': articulos})
 
 def Facturas(request):
     facturas = Factura.objects.all()
@@ -30,23 +104,25 @@ def crear_articulo(request):
         
         if articulo_form.is_valid():
             # Obtener los datos de los formularios
-            articulo_nombre_articulo = articulo_form.cleaned_data['fecha_compra']
-            articulo_cantidad = articulo_form.cleaned_data['valor_neto']
-            articulo_precio_unitario = articulo_form.cleaned_data['iva']
+            categoria_id = request.POST.get('categoria')
+            articulo_categoria = Categoria.objects.get(id=categoria_id) 
+
+
+            articulo_nombre_articulo = articulo_form.cleaned_data['nombre_articulo']
+            articulo_cantidad = articulo_form.cleaned_data['cantidad']
+            articulo_precio_unitario = articulo_form.cleaned_data['precio_unitario']
             articulo_total = articulo_form.cleaned_data['total']
-            articulo_factura_detalle = request.POST.get('factura')
-            articulo_categoria = request.POST.get('categoria')
-            
+
+            factura_detalle_id = request.POST.get('factura_detalle')
             articulo_factura_detalle = Factura.objects.get(id=factura_detalle_id)
-            articulo_categoria = Categoria.objects.get(id=categoria_id)  # Obtener la instancia del proveedor
             
-            factura = Factura.objects.create(
+            articulo = Articulo.objects.create(
+                categoria = articulo_categoria,
                 nombre_articulo = articulo_nombre_articulo,
                 cantidad = articulo_cantidad,
                 precio_unitario = articulo_precio_unitario,
                 total = articulo_total,
-                factura_detalle = articulo_factura_detalle,
-                categoria = articulo_categoria
+                factura_detalle = articulo_factura_detalle
             )
             return redirect('articulos')
         
@@ -82,7 +158,7 @@ def crear_factura(request):
             
             return redirect('facturas')
 
-    return render(request, 'main/add.html', {
+    return render(request, 'main/add_factura.html', {
         'factura_form': factura_form,
     })
 
