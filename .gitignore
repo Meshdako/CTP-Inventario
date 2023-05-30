@@ -1,0 +1,32 @@
+# Carpeta de archivos estáticos compilados
+/staticfiles/
+
+# Carpeta de archivos media (subida de archivos por usuarios)
+/media/
+
+# Carpeta de entorno virtual de Python (p. ej., virtualenv, venv, etc.)
+/venv/
+/env/
+
+# Archivo de configuración local (si se utiliza un archivo separado para el entorno local)
+/local_settings.py
+
+# Archivo de registros
+/logs/
+
+# Archivo de bases de datos SQLite
+*.sqlite3
+
+# Archivos de configuración de PyCharm (si se utiliza PyCharm como IDE)
+.idea/
+
+# Archivos de caché de PyCharm (si se utiliza PyCharm como IDE)
+__pycache__/
+
+# Archivos de caché de Django
+*.pyc
+*.pyo
+__pycache__
+
+# Archivos de migraciones de Django
+/migrations/
