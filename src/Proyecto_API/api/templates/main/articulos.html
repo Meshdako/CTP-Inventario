@@ -21,10 +21,10 @@
             </div>
             <div class="col-md-4">
                 <div class="d-flex justify-content-center align-items-center">
-                    <a href="/api/home/views">
+                    <a href="/api/home">
                         <img src="/static/images/logo.png" alt="" width="50" height="50"
                             class="d-inline-block align-text-top">
-                        <a class="navbar-brand" href="/api/home/views">
+                        <a class="navbar-brand" href="/api/home">
                             &nbsp;CTP San Ramón
                         </a>
                     </a>
@@ -43,7 +43,7 @@
 
     <div class="row">
         <div class="col-md-4 mx-auto text-center">
-            <a href="/api/home/views">
+            <a href="/api/home">
                 <button type="button" class="btn btn-warning mt-3 mb-2">Volver al Inicio</button>
             </a>
         </div>
@@ -66,13 +66,13 @@
             </tr>
         </thead>
         <tbody>
-            {% for m in productos %}
+            {% for m in articulos %}
             <tr>
                 <th scope="row">{{ m.id }}</th>
                 <td>{{ m.codigo }}</td>
                 <td>{{ m.nombre_articulo }}</td>
                 <td>{{ m.cantidad }}</td>
-                <td>{{ m.categoria_id }}</td>
+                <td>{{ m.categoria.get_tipo_categoria_display }}</td>
             </tr>
             {% endfor %}
         </tbody>
