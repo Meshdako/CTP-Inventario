@@ -1,6 +1,3 @@
-# Carpeta de archivos media (subida de archivos por usuarios)
-Proyecto_API/api/media/
-
 # Carpeta de entorno virtual de Python (p. ej., virtualenv, venv, etc.)
 /venv/
 /env/
@@ -10,11 +7,3 @@ Proyecto_API/api/media/
 
 # Archivo de registros
 /logs/
-
-# Archivos de caché de Django
-*.pyc
-*.pyo
-Proyecto_API/api/__pycache__
-
-# Archivos de migraciones de Django
-Proyecto_API/api/migrations/

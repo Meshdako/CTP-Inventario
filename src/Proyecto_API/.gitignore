@@ -1,0 +1,11 @@
+# Carpeta de archivos media (subida de archivos por usuarios)
+Proyecto_API/api/media/
+
+# Archivos de caché de Django
+*.pyc
+*.pyo
+/api/__pycache__/
+Proyecto_API/__pycache__/
+
+# Archivos de migraciones de Django
+/api/migrations/
