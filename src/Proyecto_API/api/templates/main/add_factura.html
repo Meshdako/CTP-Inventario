@@ -58,6 +58,14 @@
             {% csrf_token %}
             {{ factura_form.as_p }}
 
+            <div class="mx-auto">
+                <a href="/api/proveedor/add">
+                    <button type="button" class="btn btn-warning mt-4">
+                        ¿Agregar Proveedor?
+                    </button>
+                </a>
+            </div>
+
             <!-- <div class="from-group">
                 <div class="row">
                     <div class="col-md-9">
