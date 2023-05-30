@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingresos</title>
+
+    <script src="../../static/js/add.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
+
+<body>
+    <!-- Barra de Navegación -->
+    <div class="p-1 bg-dark text-white">
+        <div class="row">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex justify-content-center align-items-center">
+                    <a href="/api/home">
+                        <img src="/static/images/logo.png" alt="" width="50" height="50"
+                            class="d-inline-block align-text-top">
+                        <a class="navbar-brand" href="/api/home">
+                            &nbsp;CTP San Ramón
+                        </a>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <a class="navbar-brand" href="https://github.com/Meshdako">
+                        <p>Desarrollador<p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="articulo">Artículo:</label>
+        <select name="articulo" required>
+            {% for articulo in articulos %}
+            <option value="{{ articulo.id }}">{{ articulo.nombre_articulo }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" name="cantidad" required>
+        
+        <button type="submit">Agregar artículo</button>
+    </form>
+
+    <!-- Optional Javascript -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
