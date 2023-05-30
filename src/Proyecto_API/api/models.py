@@ -104,3 +104,9 @@ class Registro_Solicitud(models.Model):
 
     def __str__(self):
         return self.fecha
+    
+class LogEntry(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    item = models.ForeignKey(Articulo, on_delete=models.CASCADE)
+    change_type = models.CharField(max_length=10)
+    # Otros campos que desees registrar
