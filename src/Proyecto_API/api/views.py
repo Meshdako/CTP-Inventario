@@ -162,6 +162,43 @@ def crear_factura(request):
         'factura_form': factura_form,
     })
 
+def crear_proveedor(request):
+    # Formulario
+    proveedor_form = ProveedorForm()
+
+    if request.method == 'POST':
+        proveedor_form = ProveedorForm(request.POST)
+        
+        if proveedor_form.is_valid():
+            # Obtener los datos del formulario
+            rut = proveedor_form.cleaned_data['rut']
+            nombre = proveedor_form.cleaned_data['nombre']
+            giro = proveedor_form.cleaned_data['giro']
+            correo = proveedor_form.cleaned_data['correo']
+            telefono = proveedor_form.cleaned_data['telefono']
+            celular = proveedor_form.cleaned_data['celular']
+            web = proveedor_form.cleaned_data['web']
+            ubicacion_id = request.POST.get('ubicacion')  # Obtener el ID de la ubicación seleccionada del formulario
+            ubicacion = Direccion.objects.get(id=ubicacion_id)  # Obtener la instancia de la ubicación
+            
+            proveedor = Proveedor.objects.create(
+                rut=rut,
+                nombre=nombre,
+                giro=giro,
+                correo=correo,
+                telefono=telefono,
+                celular=celular,
+                web=web,
+                ubicacion=ubicacion
+            )  # Crear una nueva instancia de Proveedor
+            
+            return redirect('crear_factura')
+
+    return render(request, 'main/add_proveedor.html', {
+        'proveedor_form': proveedor_form,
+    })
+
+
 
 class ArticuloView(View):
     @method_decorator(csrf_exempt)
