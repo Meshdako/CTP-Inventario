@@ -22,6 +22,7 @@ from django.views.static import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('registration/', include('api.urls')),
     path('api/', include('api.urls')),
 ]
 

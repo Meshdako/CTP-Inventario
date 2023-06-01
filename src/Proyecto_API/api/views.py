@@ -1,6 +1,9 @@
 from django.db.models.signals import pre_save, post_save
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.http.response import JsonResponse
 from django.contrib.auth.models import User
@@ -11,6 +14,20 @@ from .forms import *
 import json
 
 # Create your views here.
+
+def login_view(request):
+    return LoginView.as_view(template_name='main/login.html')(request)
+
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')  # Redirige al inicio después del registro exitoso
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})
 
 @receiver(pre_save, sender=Articulo)
 def pre_save_handler(sender, instance, **kwargs):

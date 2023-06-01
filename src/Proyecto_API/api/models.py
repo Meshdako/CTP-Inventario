@@ -1,9 +1,15 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
 # Create your models here.
+
+class CustomUser(AbstractUser):
+    # Agrega los campos adicionales que necesites
+    edad = models.PositiveIntegerField(null=True)
+    direccion = models.CharField(max_length=255, null=True)
 
 class Direccion(models.Model):
     calle = models.CharField(max_length=50)

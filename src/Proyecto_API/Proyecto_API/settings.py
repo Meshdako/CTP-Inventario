@@ -73,6 +73,9 @@ TEMPLATES = [
     },
 ]
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.2/howto/static-files/
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
@@ -120,6 +123,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Autenticacion
+AUTH_USER_MODEL = 'api.CustomUser'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+AUTH_PASSWORD_VALIDATORS = [
+    # Configura tus validadores de contraseña aquí
+]
+
+LOGIN_URL = '/login/'  # Ruta para el inicio de sesión
+LOGIN_REDIRECT_URL = '/'  # Ruta a la que se redirige después del inicio de sesión exitoso
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -133,12 +151,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
