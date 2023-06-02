@@ -35,7 +35,8 @@
                     <a class="navbar-brand" href="#">
                         <p>
                             Desarrollador
-                            <p>
+                        <p>
+                    </a>
                 </div>
             </div>
         </div>
@@ -48,10 +49,23 @@
         <br>
 
         {% for log in logs %}
-            <p>{{ log.timestamp }} - {{ log.change_type }}: {{ log.item }}</p>
+            <p>
+                {{ log.timestamp }} - {{ log.change_type }}: {{ log.item }} -
+                {% if log.change_type != 'Nuevo artículo' %}
+                    Cantidad anterior: {% if log.item.old_quantity %}{{ log.item.old_quantity }}{% else %}N/A{% endif %} -
+                    {% if log.change_type == 'Aumento' %}
+                        Cantidad ingresada: {{ log.item.cantidad|default:"0" }} - {{ log.item.old_quantity|default:"0" }} -
+                    {% elif log.change_type == 'Reducción' %}
+                        Cantidad egresada: {{ log.item.old_quantity|default:"0" }} - {{ log.item.cantidad|default:"0" }} -
+                    {% endif %}
+                    Nueva cantidad: {{ log.item.cantidad }}
+                {% endif %}
+            </p>
         {% endfor %}
     </div>
-    
+
+
+
 
 
     <!-- Optional Javascript -->

@@ -6,7 +6,6 @@ app_main = "main"
 urlpatterns=[
     # Login
     path('login/', login_view, name='login'),
-    path('register/', register_view, name='register'),
     # URLs Productos
     path('articulos/', ArticuloView.as_view(), name='articulo_list'),
     path('articulos/<int:id>', ArticuloView.as_view(), name='articulo_process'),

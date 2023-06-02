@@ -18,26 +18,17 @@ import json
 def login_view(request):
     return LoginView.as_view(template_name='main/login.html')(request)
 
-def register_view(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')  # Redirige al inicio después del registro exitoso
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
-
 @receiver(pre_save, sender=Articulo)
 def pre_save_handler(sender, instance, **kwargs):
     if instance.pk is None:
+        instance.old_quantity = 0
         change_type = 'Nuevo artículo'
     else:
         try:
             old_instance = Articulo.objects.get(pk=instance.pk)
         except Articulo.DoesNotExist:
             return
+        instance.old_quantity = old_instance.cantidad
         if instance.cantidad > old_instance.cantidad:
             change_type = 'Aumento'
         elif instance.cantidad < old_instance.cantidad:
@@ -60,6 +51,7 @@ def post_save_handler(sender, instance, created, **kwargs):
     change_type = 'Aumento' if instance.cantidad > old_instance.cantidad else 'Reducción'
     log_entry = LogEntry(item=instance, change_type=change_type)
     log_entry.save()
+
 
 def logs_view(request):
     logs = LogEntry.objects.all().order_by('-timestamp')

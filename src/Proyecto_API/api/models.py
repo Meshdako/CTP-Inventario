@@ -6,11 +6,6 @@ from django.dispatch import receiver
 
 # Create your models here.
 
-class CustomUser(AbstractUser):
-    # Agrega los campos adicionales que necesites
-    edad = models.PositiveIntegerField(null=True)
-    direccion = models.CharField(max_length=255, null=True)
-
 class Direccion(models.Model):
     calle = models.CharField(max_length=50)
     numero = models.PositiveIntegerField()
@@ -81,6 +76,7 @@ class Articulo(models.Model):
     codigo = models.CharField(max_length=5, blank=True)
     nombre_articulo = models.CharField(max_length=50)
     cantidad = models.PositiveIntegerField()
+    old_quantity = models.PositiveIntegerField(blank=True, null=True)
     precio_unitario = models.PositiveIntegerField()
     total = models.PositiveIntegerField()
     factura_detalle = models.ForeignKey(Factura, on_delete=models.CASCADE)
@@ -104,13 +100,6 @@ class Articulo(models.Model):
     def __str__(self):
         return self.codigo
 
-class Registro_Solicitud(models.Model):
-    fecha = models.DateTimeField()
-    nro_factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.fecha
-    
 class LogEntry(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     item = models.ForeignKey(Articulo, on_delete=models.CASCADE)

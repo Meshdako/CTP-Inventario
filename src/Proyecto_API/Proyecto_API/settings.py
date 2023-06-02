@@ -40,9 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',
     'django_adminlte',
     'djmoney',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -122,22 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-# Autenticacion
-AUTH_USER_MODEL = 'api.CustomUser'
-
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
-
-AUTH_PASSWORD_VALIDATORS = [
-    # Configura tus validadores de contraseña aquí
-]
-
-LOGIN_URL = '/login/'  # Ruta para el inicio de sesión
-LOGIN_REDIRECT_URL = '/'  # Ruta a la que se redirige después del inicio de sesión exitoso
-
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
