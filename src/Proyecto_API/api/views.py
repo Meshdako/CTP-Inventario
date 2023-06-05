@@ -35,6 +35,7 @@ def pre_save_handler(sender, instance, **kwargs):
             change_type = 'Reducción'
         else:
             return
+    Articulo.objects.filter(pk=instance.pk).update(old_quantity=instance.old_quantity)  # Utilizar update() en lugar de save()
     log_entry = LogEntry(item=instance, change_type=change_type)
     log_entry.save()
 
@@ -48,6 +49,7 @@ def post_save_handler(sender, instance, created, **kwargs):
         return
     if instance.cantidad == old_instance.cantidad:
         return
+    Articulo.objects.filter(pk=instance.pk).update(cantidad=instance.cantidad)  # Utilizar update() en lugar de save()
     change_type = 'Aumento' if instance.cantidad > old_instance.cantidad else 'Reducción'
     log_entry = LogEntry(item=instance, change_type=change_type)
     log_entry.save()
@@ -172,42 +174,35 @@ def crear_factura(request):
     })
 
 def crear_proveedor(request):
-    # Formulario
     proveedor_form = ProveedorForm()
 
     if request.method == 'POST':
         proveedor_form = ProveedorForm(request.POST)
         
         if proveedor_form.is_valid():
-            # Obtener los datos del formulario
-            rut = proveedor_form.cleaned_data['rut']
-            nombre = proveedor_form.cleaned_data['nombre']
-            giro = proveedor_form.cleaned_data['giro']
-            correo = proveedor_form.cleaned_data['correo']
-            telefono = proveedor_form.cleaned_data['telefono']
-            celular = proveedor_form.cleaned_data['celular']
-            web = proveedor_form.cleaned_data['web']
-            ubicacion_id = request.POST.get('ubicacion')  # Obtener el ID de la ubicación seleccionada del formulario
-            ubicacion = Direccion.objects.get(id=ubicacion_id)  # Obtener la instancia de la ubicación
-            
-            proveedor = Proveedor.objects.create(
-                rut=rut,
-                nombre=nombre,
-                giro=giro,
-                correo=correo,
-                telefono=telefono,
-                celular=celular,
-                web=web,
-                ubicacion=ubicacion
-            )  # Crear una nueva instancia de Proveedor
-            
-            return redirect('crear_factura')
+            proveedor = proveedor_form.save()
+            return redirect('crear_direccion', proveedor_id=proveedor.id)
 
     return render(request, 'main/add_proveedor.html', {
         'proveedor_form': proveedor_form,
     })
 
+def crear_direccion(request, proveedor_id):
+    direccion_form = DireccionForm()
 
+    if request.method == 'POST':
+        direccion_form = DireccionForm(request.POST)
+        
+        if direccion_form.is_valid():
+            direccion = direccion_form.save()
+            proveedor = Proveedor.objects.get(id=proveedor_id)
+            proveedor.direccion = direccion
+            proveedor.save()
+            return redirect('crear_proveedor')
+
+    return render(request, 'main/add_direccion.html', {
+        'direccion_form': direccion_form,
+    })
 
 class ArticuloView(View):
     @method_decorator(csrf_exempt)

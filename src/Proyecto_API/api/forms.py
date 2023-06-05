@@ -1,10 +1,15 @@
 from django import forms
 from .models import *
 
+class DireccionForm(forms.ModelForm):
+    class Meta:
+        model = Direccion
+        fields = ['calle', 'numero', 'comuna']
+
 class ProveedorForm(forms.ModelForm):
     class Meta:
         model = Proveedor
-        fields = ['rut', 'nombre', 'giro', 'correo', 'telefono', 'celular', 'web', 'ubicacion']
+        fields = ['rut', 'nombre', 'giro', 'correo', 'telefono', 'celular', 'web', 'direccion']
 
 class FacturaForm(forms.ModelForm):
     class Meta:

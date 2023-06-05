@@ -35,66 +35,18 @@ function eliminarArticulo(id) {
     articulo.remove();
 }
 
-// Función para agregar un nuevo artículo
-function agregarArticulo() {
-    var container = document.getElementById("articulos-container");
-    var nuevoArticulo = document.createElement("div");
-    var articuloId = "articulo_" + campoIndex;
+// Agregar evento al cargar el documento
+document.addEventListener("DOMContentLoaded", function () {
+    var valorNetoInput = document.getElementById("id_valor_neto");
+    var ivaInput = document.getElementById("id_iva");
+    var totalInput = document.getElementById("id_total");
 
-    nuevoArticulo.innerHTML = `
-        <br>
-        <hr>
-        <br>
-        <div id="articulo_${campoIndex}">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="{{ articulo_form.categoria_${campoIndex}.id_for_label }}">Selecciona la categoría</label>
-                <select class="form-control" id="{{ articulo_form.categoria_${campoIndex}.id_for_label }}" name="{{ articulo_form.categoria_${campoIndex}.html_name }}">
-                    <option value="1">Mobiliario</option>
-                    <option value="2">Aseo</option>
-                    <option value="3">Química</option>
-                    <option value="4">Accesorios de Computadora</option>
-                </select>
-            </div>
+    valorNetoInput.addEventListener("input", function () {
+        var valorNeto = parseInt(valorNetoInput.value);
+        var iva = Math.round(valorNeto * 0.19);  // Calcula el 19% del valor neto
+        var total = valorNeto + iva;
 
-            <br>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label for="{{ articulo_form.nombre_articulo_${campoIndex}.id_for_label }}">Nombre del Articulo</label>
-                        <input type="text" class="form-control" id="{{ articulo_form.nombre_articulo_${campoIndex}.id_for_label }}" name="{{ articulo_form.nombre_articulo_${campoIndex}.html_name }}" placeholder="Ingresa el artículo">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="{{ articulo_form.cantidad_${campoIndex}.id_for_label }}">Cantidad</label>
-                        <input type="text" class="form-control" id="{{ articulo_form.cantidad_${campoIndex}.id_for_label }}" name="{{ articulo_form.cantidad_${campoIndex}.html_name }}" oninput="formatInput(this)" placeholder="Ingresa la cantidad">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="{{ articulo_form.precio_unitario_${campoIndex}.id_for_label }}">Precio Unitario</label>
-                        <input type="text" class="form-control" id="{{ articulo_form.precio_unitario_${campoIndex}.id_for_label }}" name="{{ articulo_form.precio_unitario_${campoIndex}.html_name }}" oninput="formatInput(this)" placeholder="Ingresa el precio">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="{{ articulo_form.total_${campoIndex}.id_for_label }}">Total</label>
-                        <input type="text" class="form-control" id="{{ articulo_form.total_${campoIndex}.id_for_label }}" name="{{ articulo_form.total_${campoIndex}.html_name }}" oninput="formatInput(this)" placeholder="Ingresa el total">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Botón para eliminar el artículo -->
-            <br>
-            <button type="button" onclick="eliminarArticulo('${articuloId}')" class="btn btn-danger mt-2">Eliminar Articulo</button>
-        </div>
-    `;
-
-    container.appendChild(nuevoArticulo);
-
-    // Incrementar el índice de campo para el próximo artículo
-    campoIndex++;
-}
+        ivaInput.value = iva;
+        totalInput.value = total;
+    });
+});

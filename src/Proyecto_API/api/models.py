@@ -15,14 +15,14 @@ class Direccion(models.Model):
         return f"{self.calle}, {self.numero}, {self.comuna}"
 
 class Proveedor(models.Model):
-    rut = models.CharField(max_length=12, unique=True)
-    nombre = models.CharField(max_length=50)
+    rut = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=100)
     giro = models.CharField(max_length=100)
-    correo = models.EmailField(max_length=254)
-    telefono = models.PositiveIntegerField()
-    celular = models.PositiveIntegerField()
-    web = models.URLField(max_length=200)
-    ubicacion = models.ForeignKey(Direccion, on_delete=models.CASCADE)
+    correo = models.EmailField(max_length=100)
+    telefono = models.CharField(max_length=20)
+    celular = models.CharField(max_length=20)
+    web = models.URLField(max_length=100)
+    direccion = models.OneToOneField(Direccion, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nombre
@@ -62,10 +62,15 @@ class Factura(models.Model):
 
 class Categoria(models.Model):
     TIPO_CATEGORIA = [
-        (1, "Mobiliario"),
-        (2, "Aseo"),
-        (3, "Quimica"),
-        (4, "Accesorio de Computadora")
+        (1, "Material escolar"),
+        (2, "Libros y recursos educativos"),
+        (3, "Mobiliario"),
+        (4, "Laboratorio"),
+        (4, "Deportes"),
+        (4, "Tecnología"),
+        (4, "Arte"),
+        (4, "Cafetería"),
+        (4, "Seguridad")   
     ]
     tipo_categoria = models.PositiveIntegerField(choices=TIPO_CATEGORIA)
 

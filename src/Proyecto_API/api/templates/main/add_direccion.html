@@ -44,31 +44,22 @@
     <!-- Formulario Factura -->
     <div class="container">
         <div class="d-flex">
-            <a href="/api/facturas/add">
+            <a href="/api/facturas/views">
                 <button type="button" class="btn btn-danger mt-3 mb-2">Cancelar</button>
             </a>
         </div>
     </div>
 
     <div class="container">
-        <h1>Agregar Proveedor</h1>
+        <h1>Agregar Dirección</h1>
         <br>
-        <form method="post" action="{% url 'crear_proveedor' %}" enctype="multipart/form-data">
-
+        <form method="post" action="{% url 'crear_direccion' %}" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ proveedor_form.as_p }}
-            
-            <div class="container">
-                <div class="d-flex">
-                    <a href="/api/direccion/add">
-                        <button type="button" class="btn btn-danger mt-3 mb-2">¿No ves la dirección correcta?</button>
-                    </a>
-                </div>
-            </div>
+            {{ direccion_form.as_p }}
 
             <br>
             <br>
-            <button type="submit" class="btn btn-primary">Agregar Proveedor</button>
+            <button type="submit" class="btn btn-primary">Agregar Direccion</button>
         </form>
     </div>
 
