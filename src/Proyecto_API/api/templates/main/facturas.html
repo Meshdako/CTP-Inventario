@@ -6,8 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facturas</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
 </head>
 
 <body>
@@ -40,7 +44,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-md-4 mx-auto text-center">
             <a href="/api/home">
@@ -48,7 +52,7 @@
             </a>
         </div>
         <div class="col-md-4">
-            
+
         </div>
         <div class="col-md-4 mx-auto text-center">
             <a href="/api/facturas/add">
@@ -65,39 +69,63 @@
                 <th scope="col">Valor Neto</th>
                 <th scope="col">IVA</th>
                 <th scope="col">Total</th>
-                <th scope="col">ID Proveedor</th>
+                <th scope="col">Proveedor</th>
+                <th scope="col">Acciones</th>
             </tr>
         </thead>
         <tbody>
+            <!-- Dentro del bucle for -->
             {% for m in facturas %}
-            <tr>
-                <th scope="row">{{ m.id }}</th>
-                <td>{{ m.fecha_compra }}</td>
-                <td>{{ m.valor_neto|intcomma }}</td>
-                <td>{{ m.iva|intcomma }}</td>
-                <td>{{ m.total|intcomma }}</td>
-                <td>{{ m.id_proveedor_id }}</td>
-            </tr>
+                {% with m.valor_neto as neto %}
+                    {% with m.iva as iva %}
+                        {% with m.total as total %}
+                            <tr>
+                                <th scope="row">{{ m.id }}</th>
+                                <td>{{ m.fecha_compra }}</td>
+                                <td>{{ neto|intcomma }}</td>
+                                <td>{{ iva|intcomma }}</td>
+                                <td>{{ total|intcomma }}</td>
+                                <td>{{ m.proveedor.nombre }}</td>
+                                <td>
+                                    <a href="{% url 'editar_factura' m.id %}">
+                                        <i class="fas fa-pencil-alt edit-icon">
+                                            <span class="material-symbols-outlined">
+                                                edit
+                                            </span>
+                                        </i> <!-- Ícono de lápiz -->
+                                    </a>
+                                    <a href="{% url 'eliminar_factura' m.id %}">
+                                        <i class="fas fa-trash delete-icon">
+                                            <span class="material-symbols-outlined">
+                                                delete
+                                            </span>
+                                        </i> <!-- Ícono de tacho de basura -->
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endwith %}
+                    {% endwith %}
+                {% endwith %}
             {% endfor %}
+
+            {% with neto as suma_neto %}
+                {% with iva as suma_iva %}
+                    {% with total as suma_total %}
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>Total Valor Neto:</td>
+                            <td id="total-valor-neto">{{ suma_neto|intcomma }}</td>
+                            <td>Total IVA:</td>
+                            <td id="total-iva">{{ suma_iva|intcomma }}</td>
+                            <td>Total:</td>
+                            <td id="total">{{ suma_total|intcomma }}</td>
+                        </tr>
+                    {% endwith %}
+                {% endwith %}
+            {% endwith %}
+
         </tbody>
     </table>
-
-
-    <!-- <div class="container p-4">
-        <div class="row">
-            {% for m in productos %}
-            <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
-                <div class="card h-100 p-4">
-                    <p>{{m.factura_detalle_id}}</p>
-                    <h4>{{m.prod_nombre}}</h4>
-                    <p class="text-muted">{{m.cant}} | </p>
-                    <p></p>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div> -->
-
 
 
     <!-- Optional Javascript -->
@@ -110,6 +138,23 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+
+    <script>
+        // Calcular los totales
+        var facturas = JSON.parse('{{ facturas|safe }}');
+        var totalValorNeto = 0;
+        var totalIVA = 0;
+        var total = 0;
+        for (var i = 0; i < facturas.length; i++) {
+            totalValorNeto += parseInt(facturas[i].valor_neto);
+            totalIVA += parseInt(facturas[i].iva);
+            total += parseInt(facturas[i].total);
+        }
+        // Actualizar los elementos de la tabla con los totales calculados
+        document.getElementById("total-valor-neto").innerText = totalValorNeto.toLocaleString();
+        document.getElementById("total-iva").innerText = totalIVA.toLocaleString();
+        document.getElementById("total").innerText = total.toLocaleString();
+    </script>
 </body>
 
 </html>

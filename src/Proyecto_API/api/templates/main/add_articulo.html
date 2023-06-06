@@ -58,6 +58,28 @@
             {% csrf_token %}
             {{ articulo_form.as_p }}
 
+            <!-- Agrega el código JavaScript para calcular el total -->
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var cantidadInput = document.getElementById("id_cantidad");
+                    var precioUnitarioInput = document.getElementById("id_precio_unitario");
+                    var totalInput = document.getElementById("id_total");
+
+                    // Función para calcular el total
+                    function calcularTotal() {
+                        var cantidad = parseInt(cantidadInput.value);
+                        var precioUnitario = parseFloat(precioUnitarioInput.value.replace(/\./g, '').replace(',', '.'));
+                        var total = cantidad * precioUnitario;
+
+                        totalInput.value = total.toFixed(2);  // Ajusta el total a dos decimales
+                    }
+
+                    // Escucha el evento "input" en los campos de cantidad y precio unitario
+                    cantidadInput.addEventListener("input", calcularTotal);
+                    precioUnitarioInput.addEventListener("input", calcularTotal);
+                });
+            </script>
+
             <br>
             <br>
             <button type="submit" class="btn btn-primary">Agregar Articulo</button>

@@ -66,11 +66,11 @@ class Categoria(models.Model):
         (2, "Libros y recursos educativos"),
         (3, "Mobiliario"),
         (4, "Laboratorio"),
-        (4, "Deportes"),
-        (4, "Tecnología"),
-        (4, "Arte"),
-        (4, "Cafetería"),
-        (4, "Seguridad")   
+        (5, "Deportes"),
+        (6, "Tecnología"),
+        (7, "Arte"),
+        (8, "Cafetería"),
+        (9, "Seguridad")   
     ]
     tipo_categoria = models.PositiveIntegerField(choices=TIPO_CATEGORIA)
 

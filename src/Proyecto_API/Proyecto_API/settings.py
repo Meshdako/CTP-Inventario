@@ -97,7 +97,7 @@ DATABASES = {
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': '8791',
-        'NAME': 'api_ctp',
+        'NAME': 'ctp_api',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }

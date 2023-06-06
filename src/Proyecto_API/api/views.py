@@ -3,6 +3,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.http.response import JsonResponse
@@ -106,6 +107,7 @@ def Products(request):
     articulos = Articulo.objects.all()
     return render(request = request, template_name="main/articulos.html", context={'articulos':articulos})
 
+
 def crear_articulo(request):
     # Formulario
     articulo_form = ArticuloForm()
@@ -118,14 +120,13 @@ def crear_articulo(request):
             categoria_id = request.POST.get('categoria')
             articulo_categoria = Categoria.objects.get(id=categoria_id) 
 
-
             articulo_nombre_articulo = articulo_form.cleaned_data['nombre_articulo']
             articulo_cantidad = articulo_form.cleaned_data['cantidad']
             articulo_precio_unitario = articulo_form.cleaned_data['precio_unitario']
             articulo_total = articulo_form.cleaned_data['total']
 
-            factura_detalle_id = request.POST.get('factura_detalle')
-            articulo_factura_detalle = Factura.objects.get(id=factura_detalle_id)
+            factura_detalle = articulo_form.cleaned_data['factura_detalle']
+            articulo_factura_detalle = Factura.objects.get(id=factura_detalle.id)
             
             articulo = Articulo.objects.create(
                 categoria = articulo_categoria,
@@ -173,6 +174,24 @@ def crear_factura(request):
         'factura_form': factura_form,
     })
 
+def editar_factura(request, id):
+    factura = Factura.objects.get(id=id)
+    if request.method == 'POST':
+        form = FacturaForm(request.POST, instance=factura)
+        if form.is_valid():
+            form.save()
+            # Redirigir o hacer alguna otra acción después de guardar el formulario
+    else:
+        form = FacturaForm(instance=factura)
+
+    context = {'form': form}
+    return render(request, 'main/editar_factura.html', context)
+
+def eliminar_factura(request, id):
+    factura = Factura.objects.get(id=id)
+    factura.delete()
+    # Redirigir o hacer alguna otra acción después de eliminar la factura
+
 def crear_proveedor(request):
     proveedor_form = ProveedorForm()
 
@@ -180,14 +199,34 @@ def crear_proveedor(request):
         proveedor_form = ProveedorForm(request.POST)
         
         if proveedor_form.is_valid():
-            proveedor = proveedor_form.save()
-            return redirect('crear_direccion', proveedor_id=proveedor.id)
+            provedor_rut = proveedor_form.cleaned_data['rut']
+            provedor_nombre = proveedor_form.cleaned_data['nombre']
+            provedor_giro = proveedor_form.cleaned_data['giro']
+            provedor_correo = proveedor_form.cleaned_data['correo']
+            provedor_telefono = proveedor_form.cleaned_data['telefono']
+            provedor_celular = proveedor_form.cleaned_data['celular']
+            provedor_web = proveedor_form.cleaned_data['web']
+
+            direccion_id = request.POST.get('direccion')
+            direccion = Direccion.objects.get(id=direccion_id)
+
+            proveedor = Proveedor.objects.create(
+                rut = provedor_rut,
+                nombre = provedor_nombre,
+                giro = provedor_giro,
+                correo = provedor_correo,
+                telefono = provedor_telefono,
+                celular = provedor_celular,
+                web = provedor_web,
+                direccion = direccion,
+            )
+            return redirect('crear_factura')
 
     return render(request, 'main/add_proveedor.html', {
         'proveedor_form': proveedor_form,
     })
 
-def crear_direccion(request, proveedor_id):
+def crear_direccion(request):
     direccion_form = DireccionForm()
 
     if request.method == 'POST':
@@ -195,9 +234,6 @@ def crear_direccion(request, proveedor_id):
         
         if direccion_form.is_valid():
             direccion = direccion_form.save()
-            proveedor = Proveedor.objects.get(id=proveedor_id)
-            proveedor.direccion = direccion
-            proveedor.save()
             return redirect('crear_proveedor')
 
     return render(request, 'main/add_direccion.html', {
@@ -334,7 +370,7 @@ class ProveedorView(View):
             return JsonResponse(datos)
 
     def post(self, request):
-        pass
+        return
 
     def put(self, request, id):
         jd = json.loads(request.body)
@@ -361,49 +397,57 @@ class ProveedorView(View):
             datos = {'message': "Proveedor no encontrado..."}
         return JsonResponse(datos)
     
-class RegistroView(View):
+class DireccionView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, id=0):
-        if (id > 0):
-            registros = list(Registro_Solicitud.objects.filter(id=id).values())
-            if len(registros) > 0:
-                registro = registros[0]
-                datos={'message':"Success", 'registro':registro}
+        if(id > 0):
+            direcciones = list(Direccion.objects.filter(id=id).values())
+            if len(direcciones) > 0:
+                direccion = direcciones[0]
+                datos={'message':"Success", 'direccion':direccion}
             else:
-                datos={'message':"Registro no encontrado..."}
+                datos={'message':"Dirección no encontrada..."}
             return JsonResponse(datos)
         else:
-            registros=list(Registro_Solicitud.objects.values())
-            if len(registros) > 0:
-                datos={'message':'Success', 'registros':registros}
+            direcciones = list(Direccion.objects.values())
+            if len(direcciones) > 0:
+                datos={'message':'Success', 'direcciones':direcciones}
             else:
-                datos={'message':"Registros no encontrados..."}
+                datos={'message':"Direcciones no encontradas..."}
             return JsonResponse(datos)
 
     def post(self, request):
-        pass
+        # print(request.body)
+        jd = json.loads(request.body)
+        
+        Direccion.objects.create(calle=jd['calle'], numero=jd['numero'], comuna=jd['comuna'])
+        
+        datos={'message':'Success'}
+        # print(jd)
+        return JsonResponse(datos)
 
     def put(self, request, id):
         jd = json.loads(request.body)
-        registro = list(Registro_Solicitud.objects.filter(id=id).values())
-        if len(registro) > 0:
-            registro = Registro_Solicitud.objects.get(id=id)
-            registro.rut=jd['rut']
-            registro.nombre=jd['nombre']
-            registro.save()
+        direcciones = list(Direccion.objects.filter(id=id).values())
+        if len(direcciones) > 0:
+            direcciones = Articulo.objects.get(id=id)
+            direcciones.calle=jd['calle']
+            direcciones.numero=jd['numero']
+            direcciones.comuna=jd['comuna']
+            direcciones.save()
             datos = {'message': 'Success'}
         else:
-            datos={'message':"Registro no encontrado..."}
+            datos={'message':"Dirección no encontrada..."}
         return JsonResponse(datos)
 
     def delete(self, request, id):
-        registro = list(Registro_Solicitud.objects.filter(id=id).values())
-        if len(registro) > 0:
-            Registro_Solicitud.objects.filter(id=id).delete(),
+        direcciones = list(Direccion.objects.filter(id=id).values())
+        if len(direcciones) > 0:
+            Direccion.objects.filter(id=id).delete(),
             datos = {'message': 'Success'}
         else:
-            datos = {'message': "Registro no encontrado..."}
+            datos = {'message': "Dirección no encontrada..."}
         return JsonResponse(datos)
