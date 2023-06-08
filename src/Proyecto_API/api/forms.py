@@ -16,7 +16,7 @@ class FacturaForm(forms.ModelForm):
         model = Factura
         fields = ['fecha_compra', 'valor_neto', 'iva', 'total', 'archivo', 'proveedor']
         widgets = {
-            'proveedor': forms.Select(attrs={'class': 'form-control'})  # Opcional: agregar una clase CSS al campo proveedor
+            'proveedor': forms.Select(attrs={'class': 'form-control'})
         }
 
 class ArticuloForm(forms.ModelForm):
@@ -25,5 +25,5 @@ class ArticuloForm(forms.ModelForm):
         fields = ['categoria', 'nombre_articulo', 'cantidad', 'precio_unitario', 'total', 'factura_detalle']
         widgets = {
             'categoria': forms.Select(attrs={'class': 'form-control'}),
-            'factura_detalle': forms.Select(attrs={'class': 'form-control'})  # Agregar una clase CSS al campo factura_detalle
+            'factura_detalle': forms.Select(attrs={'class': 'form-control'})
         }

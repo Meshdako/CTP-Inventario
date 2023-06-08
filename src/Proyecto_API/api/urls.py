@@ -1,11 +1,14 @@
+from django.contrib.auth import views as auth_views
 from django.urls import path
 from .views import *
 
 app_main = "main"
 
+app_name= 'api'
+
 urlpatterns=[
     # Login
-    path('login/', login_view, name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='main/login.html'), name='login'),
     # URLs Productos
     path('articulos/', ArticuloView.as_view(), name='articulo_list'),
     path('articulos/<int:id>', ArticuloView.as_view(), name='articulo_process'),

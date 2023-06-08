@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.db import transaction
 
 # Create your models here.
 
@@ -98,8 +99,14 @@ class Articulo(models.Model):
                 codigo = tipo_categoria[0].upper() + str(Articulo.objects.count() + 1).zfill(4)
                 self.codigo = codigo
 
+    @transaction.atomic
     def save(self, *args, **kwargs):
-        self.generar_codigo()  # Generar el código antes de guardar el objeto
+        # Guardar objetos relacionados antes de guardar el artículo
+        if self.categoria_id:
+            self.categoria.save()
+        if self.factura_detalle_id:
+            self.factura_detalle.save()
+
         super().save(*args, **kwargs)
 
     def __str__(self):

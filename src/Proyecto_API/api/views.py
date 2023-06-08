@@ -17,7 +17,10 @@ import json
 # Create your views here.
 
 def login_view(request):
-    return LoginView.as_view(template_name='main/login.html')(request)
+    # Verificar las credenciales del usuario y realizar el inicio de sesión
+
+    # Redirigir a una página específica después del inicio de sesión
+    return redirect('home')  # 'home' es la URL a la que se redirigir
 
 @receiver(pre_save, sender=Articulo)
 def pre_save_handler(sender, instance, **kwargs):
@@ -118,29 +121,31 @@ def crear_articulo(request):
         if articulo_form.is_valid():
             # Obtener los datos de los formularios
             categoria_id = request.POST.get('categoria')
-            articulo_categoria = Categoria.objects.get(id=categoria_id) 
+            articulo_categoria = Categoria.objects.get(id=categoria_id)
 
             articulo_nombre_articulo = articulo_form.cleaned_data['nombre_articulo']
             articulo_cantidad = articulo_form.cleaned_data['cantidad']
             articulo_precio_unitario = articulo_form.cleaned_data['precio_unitario']
             articulo_total = articulo_form.cleaned_data['total']
 
-            factura_detalle = articulo_form.cleaned_data['factura_detalle']
-            articulo_factura_detalle = Factura.objects.get(id=factura_detalle.id)
-            
+            factura_detalle_id = request.POST.get('factura_detalle')
+            articulo_factura_detalle = Factura.objects.get(id=factura_detalle_id)
+
             articulo = Articulo.objects.create(
-                categoria = articulo_categoria,
-                nombre_articulo = articulo_nombre_articulo,
-                cantidad = articulo_cantidad,
-                precio_unitario = articulo_precio_unitario,
-                total = articulo_total,
-                factura_detalle = articulo_factura_detalle
+                categoria=articulo_categoria,
+                nombre_articulo=articulo_nombre_articulo,
+                cantidad=articulo_cantidad,
+                precio_unitario=articulo_precio_unitario,
+                total=articulo_total,
+                factura_detalle=articulo_factura_detalle,
+                old_quantity=0  # Asigna un valor predeterminado al campo old_quantity
             )
             return redirect('articulos')
         
     return render(request, 'main/add_articulo.html', {
         'articulo_form': articulo_form,
     })
+
 
 def crear_factura(request):
     # Formulario
