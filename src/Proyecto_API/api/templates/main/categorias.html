@@ -5,11 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ingresos</title>
+    <title>Categorias</title>
 
-    <script src="../../static/js/add.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
 </head>
 
 <body>
@@ -32,47 +34,52 @@
             </div>
             <div class="col-md-4">
                 <div class="text-center">
-                    <a class="navbar-brand" href="https://github.com/Meshdako">
-                        <p>Desarrollador<p>
-                    </a>
+                    <a class="navbar-brand" href="#">
+                        <p>
+                            Desarrollador
+                            <p>
                 </div>
             </div>
         </div>
     </div>
 
-    <br>
-    <div class="container rounded bg-light">
-        <br>
-        <div class="container m-4">
-            <h2>Ingreso de Articulos</h2>
+    <div class="row">
+        <div class="col-md-4 mx-auto text-center">
+            <a href="/api/home">
+                <button type="button" class="btn btn-warning m-2">Volver al Inicio</button>
+            </a>
         </div>
-        <div class="containter">
-            <form method="post">
-                {% csrf_token %}
-    
-                <div class="row">
-                    <div class="col-md-1 mt-4 ms-5">
-                        <label for="articulo">Artículo:</label>
-                    </div>
-                    <div class="col-md-2 mt-4">
-                        <select name="articulo" required>
-                            {% for articulo in articulos %}
-                            <option value="{{ articulo.id }}">{{ articulo.codigo }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-md-6 mt-4 ms-4">
-                        <label for="cantidad">Cantidad:</label>
-                        <input type="number" name="cantidad" required>
-                        
-                        <button type="submit" class="btn btn-warning">Agregar artículo</button>
-                    </div>
-                </div>
-                
-            </form>
+        <div class="col-md-4">
+
         </div>
-        <br>
+        <div class="col-md-4">
+
+        </div>
     </div>
+
+    <!-- categorias.html -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Categoría</th>
+                <th>Artículos</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for categoria in categorias %}
+            <tr>
+                <td>{{ categoria.get_tipo_categoria_display }}</td>
+                <td>
+                    <ul>
+                        {% for articulo in categoria.articulo_set.all %}
+                        <li>{{ articulo.codigo }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <!-- Optional Javascript -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

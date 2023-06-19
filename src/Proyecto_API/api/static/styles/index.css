@@ -14,3 +14,9 @@ body {
     opacity: 0.8;
     /* transparencia de la imagen */
 }
+
+.btn {
+    width: 40px;
+    height: 10px;
+    border-radius: 50px;
+}

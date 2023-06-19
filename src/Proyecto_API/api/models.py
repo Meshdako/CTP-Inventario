@@ -1,9 +1,8 @@
-from django.db import models
+from django.db import models, transaction
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from django.db import transaction
 
 # Create your models here.
 
@@ -71,7 +70,8 @@ class Categoria(models.Model):
         (6, "Tecnología"),
         (7, "Arte"),
         (8, "Cafetería"),
-        (9, "Seguridad")   
+        (9, "Seguridad"),
+        (10, "Aseo") 
     ]
     tipo_categoria = models.PositiveIntegerField(choices=TIPO_CATEGORIA)
 
@@ -88,26 +88,31 @@ class Articulo(models.Model):
     factura_detalle = models.ForeignKey(Factura, on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
 
+    @transaction.atomic
+    def save(self, *args, **kwargs):
+        # Guardar objetos relacionados antes de guardar el artículo
+        # if self.categoria_id:
+        #     self.categoria.save()
+        # if self.factura_detalle_id:
+        #     self.factura_detalle.save()
+        
+        self.generar_codigo()
+
+        super().save(*args, **kwargs)
+    
     def generar_codigo(self):
         if not self.codigo:
             categoria = self.categoria
             if categoria:
                 # Obtener el tipo de categoría
                 tipo_categoria = categoria.get_tipo_categoria_display()
-                
-                # Generar el código basado en el tipo de categoría
-                codigo = tipo_categoria[0].upper() + str(Articulo.objects.count() + 1).zfill(4)
+
+                # Obtener el número de artículos existentes en la categoría actual
+                num_articulos = Articulo.objects.filter(categoria=categoria).count()
+
+                # Generar el código basado en el tipo de categoría y el número de artículos
+                codigo = tipo_categoria[0].upper() + str(num_articulos + 1).zfill(4)
                 self.codigo = codigo
-
-    @transaction.atomic
-    def save(self, *args, **kwargs):
-        # Guardar objetos relacionados antes de guardar el artículo
-        if self.categoria_id:
-            self.categoria.save()
-        if self.factura_detalle_id:
-            self.factura_detalle.save()
-
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.codigo

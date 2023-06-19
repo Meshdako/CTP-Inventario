@@ -4,8 +4,6 @@ from .views import *
 
 app_main = "main"
 
-app_name= 'api'
-
 urlpatterns=[
     # Login
     path('login/', auth_views.LoginView.as_view(template_name='main/login.html'), name='login'),
@@ -28,6 +26,8 @@ urlpatterns=[
     # ARTICULOS
     path("articulos/views", Products, name="articulos"),
     path('articulos/add', crear_articulo, name='crear_articulo'),
+    path('articulos/edit/<int:id>', editar_articulo, name='editar_articulo'),
+    path('articulos/delete/<int:id>', eliminar_articulo, name='eliminar_articulo'),
     # FACTURAS
     path("facturas/views", Facturas, name="facturas"),
     path('facturas/add', crear_factura, name='crear_factura'),
@@ -36,6 +36,8 @@ urlpatterns=[
     # DIRECCION
     path('proveedor/add', crear_proveedor, name='crear_proveedor'),
     path('direccion/add', crear_direccion, name='crear_direccion'),
+    # CATEGORIAS
+    path('categorias/views', Catergorias, name='categorias'),
     # LOGS
     path('registros', logs_view, name='registros'),
 ]

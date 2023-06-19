@@ -40,32 +40,37 @@
         </div>
     </div>
 
-    <div class="container m-4">
-        <h2>Salida de Articulos</h2>
-    </div>
-    <div class="containter">
-        <form method="post">
-            {% csrf_token %}
-
-            <div class="row">
-                <div class="col-md-1 mt-4 ms-5">
-                    <label for="articulo">Artículo:</label>
+    <br>
+    <div class="containter container rounded bg-light">
+        <br>
+        <div class="container m-4">
+            <h2>Salida de Articulos</h2>
+        </div>
+        <div class="containter">
+            <form method="post">
+                {% csrf_token %}
+    
+                <div class="row">
+                    <div class="col-md-1 mt-4 ms-5">
+                        <label for="articulo">Artículo:</label>
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <select name="articulo" required>
+                            {% for articulo in articulos %}
+                            <option value="{{ articulo.id }}">{{ articulo.codigo }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6 mt-4 ms-4">
+                        <label for="cantidad">Cantidad:</label>
+                        <input type="number" name="cantidad" required>
+    
+                        <button type="submit" class="btn btn-warning" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .90rem;">Actualizar Articulo</button>
+                    </div>
                 </div>
-                <div class="col-md-2 mt-4">
-                    <select name="articulo" required>
-                        {% for articulo in articulos %}
-                        <option value="{{ articulo.id }}">{{ articulo.codigo }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-6 mt-4 ms-4">
-                    <label for="cantidad">Cantidad:</label>
-                    <input type="number" name="cantidad" required>
-
-                    <button type="submit" class="btn btn-warning" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .90rem;">Actualizar Articulo</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <br>
     </div>
 
 

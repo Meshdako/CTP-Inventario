@@ -41,7 +41,7 @@ def pre_save_handler(sender, instance, **kwargs):
             return
     Articulo.objects.filter(pk=instance.pk).update(old_quantity=instance.old_quantity)  # Utilizar update() en lugar de save()
     log_entry = LogEntry(item=instance, change_type=change_type)
-    log_entry.save()
+    # log_entry.save()
 
 @receiver(post_save, sender=Articulo)
 def post_save_handler(sender, instance, created, **kwargs):
@@ -110,7 +110,6 @@ def Products(request):
     articulos = Articulo.objects.all()
     return render(request = request, template_name="main/articulos.html", context={'articulos':articulos})
 
-
 def crear_articulo(request):
     # Formulario
     articulo_form = ArticuloForm()
@@ -146,6 +145,22 @@ def crear_articulo(request):
         'articulo_form': articulo_form,
     })
 
+def editar_articulo(request, id):
+    articulo = Articulo.objects.get(id=id)
+    if request.method == 'POST':
+        form = ArticuloForm(request.POST, instance=articulo)
+        if form.is_valid():
+            form.save()
+    else:
+        form = ArticuloForm(instance=articulo)
+    
+    context = {'form': form}
+    return render(request, 'main/editar_articulo.html', context)
+
+def eliminar_articulo(request, id):
+    articulo = Articulo.objects.get(id=id)
+    articulo.delete()
+    return redirect('articulos')
 
 def crear_factura(request):
     # Formulario
@@ -244,6 +259,10 @@ def crear_direccion(request):
     return render(request, 'main/add_direccion.html', {
         'direccion_form': direccion_form,
     })
+
+def Catergorias(request):
+    categorias = Categoria.objects.all()
+    return render(request = request, template_name='main/categorias.html', context={'categorias': categorias})
 
 class ArticuloView(View):
     @method_decorator(csrf_exempt)

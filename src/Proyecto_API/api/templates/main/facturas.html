@@ -107,23 +107,6 @@
                     {% endwith %}
                 {% endwith %}
             {% endfor %}
-
-            {% with neto as suma_neto %}
-                {% with iva as suma_iva %}
-                    {% with total as suma_total %}
-                        <tr>
-                            <td colspan="2"></td>
-                            <td>Total Valor Neto:</td>
-                            <td id="total-valor-neto">{{ suma_neto|intcomma }}</td>
-                            <td>Total IVA:</td>
-                            <td id="total-iva">{{ suma_iva|intcomma }}</td>
-                            <td>Total:</td>
-                            <td id="total">{{ suma_total|intcomma }}</td>
-                        </tr>
-                    {% endwith %}
-                {% endwith %}
-            {% endwith %}
-
         </tbody>
     </table>
 
