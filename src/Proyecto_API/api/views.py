@@ -290,7 +290,7 @@ class ArticuloView(View):
         # print(request.body)
         jd = json.loads(request.body)
         
-        Articulo.objects.create(prod_nombre=jd['prod_nombre'], cant=jd['cant'], precio_unit=jd['precio_unit'], total=jd['total'], factura_detalle_id=jd['factura_detalle_id'])
+        Articulo.objects.create(nombre_articulo=jd['nombre_articulo'], cantidad=jd['cantidad'], precio_unitario=jd['precio_unitario'], total=jd['total'], factura_detalle=jd['factura_detalle'], categoria=jd['categoria'])
         
         datos={'message':'Success'}
         # print(jd)
@@ -301,11 +301,12 @@ class ArticuloView(View):
         articulos = list(Articulo.objects.filter(id=id).values())
         if len(articulos) > 0:
             articulo = Articulo.objects.get(id=id)
-            articulo.prod_nombre=jd['prod_nombre']
-            articulo.cant=jd['cant']
-            articulo.precio_unit=jd['precio_unit']
+            articulo.nombre_articulo=jd['nombre_articulo']
+            articulo.cantidad=jd['cantidad']
+            articulo.precio_unitario=jd['precio_unitario']
             articulo.total = jd['cant'] * jd['precio_unit']
             articulo.factura_detalle_id=jd['factura_detalle_id']
+            articulo.categoria_id=jd['categoria_id']
             articulo.save()
             datos = {'message': 'Success'}
         else:
@@ -344,7 +345,7 @@ class FacturaView(View):
             return JsonResponse(datos)
 
     def post(self, request):
-        pass
+        return
 
     def put(self, request, id):
         jd = json.loads(request.body)
